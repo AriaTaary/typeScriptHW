@@ -1,10 +1,10 @@
 import { renderSearchFormBlock } from './search-form.js'
 import { renderSearchStubBlock } from './search-results.js'
-import { renderUserBlock } from './user.js'
-import { renderToast } from './lib.js'
+import { setLocalData, getUserData, getFavoritesAmount, renderUserBlock } from './user.js'
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderUserBlock('Wade Warren', './img/avatar.png', 3)
-  renderSearchFormBlock('2022-2-20', '2022-2-22')
+  setLocalData(),
+  renderUserBlock(getUserData().username, getUserData().avatarUrl, getFavoritesAmount().count)
+  renderSearchFormBlock(new Date(2022, 1, 20), new Date(2022, 1, 22))
   renderSearchStubBlock()
 })
