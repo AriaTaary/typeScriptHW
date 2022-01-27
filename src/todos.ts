@@ -12,17 +12,7 @@ function checkTodosData(obj: any): obj is IToDo[] {
 
 export async function getTodosByCount(count: number) {
   const responseData = await fetch('https://jsonplaceholder.typicode.com/todos')
-    .then(response => { return response.json() }) as unknown;
-    // .then<IToDo[]>(response => { return response.json() }); // или так правильнее?
-
-  if (!checkTodosData(responseData)) {
-    renderToast(
-      { text: 'Ошибка получения данных!', type: 'error' },
-      { name: 'Понял', handler: () => { console.log('Уведомление закрыто') } }
-    )
-
-    return;
-  }
+    .then<IToDo[]>(response => { return response.json() });
 
   if (!count || !responseData.length) {
     renderToast(
@@ -35,7 +25,6 @@ export async function getTodosByCount(count: number) {
 
   const updatedData = responseData.slice(0, count) as IToDo[];
   updatedData.forEach((item: IToDo, index: number): void => {
-    // console.log(`Задание ${index}: ${item.title}`); // более красивый вид
-    console.log(item);
+    console.log(`Задание ${index}: ${item.title}`);
   })
 }

@@ -8,9 +8,20 @@ export interface IFavoritesAmount {
 }
 
 export interface ISearchFormData {
+  city: string
   dateOfArrival: Date,
   dateOfDeparture: Date,
   maxPrice?: number
+}
+
+export interface ISearchResult {
+  id: string
+  title: string
+  details: string
+  photos: string[]
+  coordinates: number[],
+  bookedDates: Date[],
+  totalPrice: number
 }
 
 export interface IToDo {
