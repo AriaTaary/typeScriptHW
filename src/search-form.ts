@@ -1,5 +1,7 @@
 import { renderBlock, renderToast } from './lib.js'
 import { ISearchFormData } from './types.js'
+import { FlatRentSdk } from './flat-rent-sdk.js'
+import { renderSearchResultsBlock } from './search-results.js'
 
 export function renderSearchFormBlock(dateOfArrival: Date, dateOfDeparture: Date): void {
   const today = new Date();
@@ -72,28 +74,25 @@ function getHtmlValueDate(date: Date): string {
 }
 
 function getInputData(): void {
-  // Почему-то вызывается на маунте компонента, хотя не должно. Возможно, это лайфсервер шалит, а возможно я слишком привыкла ко Вью и что-то делаю не так.
+  const city = (document.getElementById('city') as HTMLInputElement).value;
+  const dateOfArrival = new Date((document.getElementById('check-in-date') as HTMLInputElement).value);
+  const dateOfDeparture = new Date((document.getElementById('check-out-date') as HTMLInputElement).value);
 
+  const maxPrice = (document.getElementById('max-price') as HTMLInputElement).value;
+  let formattedPrice: number;
 
-  // const dateOfArrival = new Date((document.getElementById('check-in-date') as HTMLInputElement).value);
-  // const dateOfDeparture = new Date((document.getElementById('check-out-date') as HTMLInputElement).value);
+  if (/^\d*\.?\d*$/.test(maxPrice)) {
+    formattedPrice = Number(maxPrice)
+  }
 
-  // const maxPrice = (document.getElementById('max-price') as HTMLInputElement).value;
-  // let formattedPrice: number;
+  const searchFormData = {
+    city,
+    dateOfArrival,
+    dateOfDeparture,
+    formattedPrice
+  } as ISearchFormData;
 
-  // if (/^\d*\.?\d*$/.test(maxPrice)) {
-  //   formattedPrice = Number(maxPrice)
-  // }
-
-  // const searchFormData = {
-  //   dateOfArrival,
-  //   dateOfDeparture,
-  //   formattedPrice
-  // } as ISearchFormData;
-
-  // search(searchFormData);
-}
-
-function search(data: ISearchFormData): void {
-  console.log(data);
+  const search = new FlatRentSdk()
+  const results = search.search(searchFormData)
+  results.then(resolve => renderSearchResultsBlock(resolve))
 }
