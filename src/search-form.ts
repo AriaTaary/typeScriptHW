@@ -1,6 +1,7 @@
 import { renderBlock, renderToast } from './lib.js'
+import { ISearchFormData } from './types.js'
 
-export function renderSearchFormBlock(dateOfArrival: string, dateOfDeparture: string) {
+export function renderSearchFormBlock(dateOfArrival: Date, dateOfDeparture: Date): void {
   const today = new Date();
   const thisDay = today.getDate();
   const thisMonth = today.getMonth();
@@ -10,12 +11,12 @@ export function renderSearchFormBlock(dateOfArrival: string, dateOfDeparture: st
   const defaultDateOfDeparture = new Date(thisYear, thisMonth, defaultDateOfArrival.getDate() + 2);
   const maximumDate = new Date(thisYear, thisMonth + 2, 0);
 
-  if (new Date(dateOfArrival) < today) {
+  if (dateOfArrival < today) {
     renderToast(
       { text: 'Неподходящая дата въезда. Пожалуйста, введите другую.', type: 'error' },
       { name: 'Понял', handler: () => { console.log('Уведомление закрыто') } }
     )
-  } else if (new Date(dateOfDeparture) > maximumDate) {
+  } else if (dateOfDeparture > maximumDate) {
     renderToast(
       { text: 'Неподходящая дата выезда. Пожалуйста, введите другую.', type: 'error' },
       { name: 'Понял', handler: () => { console.log('Уведомление закрыто') } }
@@ -24,7 +25,7 @@ export function renderSearchFormBlock(dateOfArrival: string, dateOfDeparture: st
     renderBlock(
       'search-form-block',
       `
-      <form>
+      <form onsubmit=${getInputData()}>
         <fieldset class="search-filedset">
           <div class="row">
             <div>
@@ -40,18 +41,18 @@ export function renderSearchFormBlock(dateOfArrival: string, dateOfDeparture: st
           <div class="row">
             <div>
               <label for="check-in-date">Дата заезда</label>
-              <input id="check-in-date" type="date" value=${getHtmlValueDate(defaultDateOfArrival)} min=${getHtmlValueDate(today)} max=${getHtmlValueDate(maximumDate)} name="checkin" />
+              <input id="check-in-date" type="date" value=${getHtmlValueDate(dateOfArrival || defaultDateOfArrival)} min=${getHtmlValueDate(today)} max=${getHtmlValueDate(maximumDate)} name="checkin" />
             </div>
             <div>
               <label for="check-out-date">Дата выезда</label>
-              <input id="check-out-date" type="date" value=${getHtmlValueDate(defaultDateOfDeparture)} min=${getHtmlValueDate(today)} max=${getHtmlValueDate(maximumDate)} name="checkout" />
+              <input id="check-out-date" type="date" value=${getHtmlValueDate(dateOfDeparture || defaultDateOfDeparture)} min=${getHtmlValueDate(today)} max=${getHtmlValueDate(maximumDate)} name="checkout" />
             </div>
             <div>
               <label for="max-price">Макс. цена суток</label>
               <input id="max-price" type="text" value="" name="price" class="max-price" />
             </div>
             <div>
-              <div><button>Найти</button></div>
+              <div><button type="submit">Найти</button></div>
             </div>
           </div>
         </fieldset>
@@ -62,10 +63,37 @@ export function renderSearchFormBlock(dateOfArrival: string, dateOfDeparture: st
 }
 
 
-function getHtmlValueDate(date: Date) {
+function getHtmlValueDate(date: Date): string {
   if (date.getMonth() < 9) {
     return `${date.getFullYear()}-0${date.getMonth() + 1}-${date.getDate()}`;
   } else {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
+}
+
+function getInputData(): void {
+  // Почему-то вызывается на маунте компонента, хотя не должно. Возможно, это лайфсервер шалит, а возможно я слишком привыкла ко Вью и что-то делаю не так.
+
+
+  // const dateOfArrival = new Date((document.getElementById('check-in-date') as HTMLInputElement).value);
+  // const dateOfDeparture = new Date((document.getElementById('check-out-date') as HTMLInputElement).value);
+
+  // const maxPrice = (document.getElementById('max-price') as HTMLInputElement).value;
+  // let formattedPrice: number;
+
+  // if (/^\d*\.?\d*$/.test(maxPrice)) {
+  //   formattedPrice = Number(maxPrice)
+  // }
+
+  // const searchFormData = {
+  //   dateOfArrival,
+  //   dateOfDeparture,
+  //   formattedPrice
+  // } as ISearchFormData;
+
+  // search(searchFormData);
+}
+
+function search(data: ISearchFormData): void {
+  console.log(data);
 }
