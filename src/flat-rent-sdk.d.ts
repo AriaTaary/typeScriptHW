@@ -8,8 +8,8 @@ export class FlatRentSdk {
   search(parameters: ISearchFormData): Promise<ISearchResult[] | null>
   book(flatId: number, checkInDate: Date, checkOutDate: Date): number
 
-  _assertDatesAreCorrect(checkInDate: Date, checkOutDate: Date)
-  _resetTime(date: Date)
+  _assertDatesAreCorrect(checkInDate: Date, checkOutDate: Date): void
+  _resetTime(date: Date): void
   _calculateDifferenceInDays(startDate: Date, endDate: Date): number
   _generateDateRange(from: Date, to: Date): Date[]
 

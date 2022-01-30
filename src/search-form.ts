@@ -1,5 +1,5 @@
 import { renderBlock, renderToast } from './lib.js'
-import { ISearchFormData } from './types.js'
+import { ISearchFormData, ISearchResult } from './types.js'
 import { FlatRentSdk } from './flat-rent-sdk.js'
 import { renderSearchResultsBlock } from './search-results.js'
 
@@ -81,18 +81,18 @@ function getInputData(): void {
   const maxPrice = (document.getElementById('max-price') as HTMLInputElement).value;
   let formattedPrice: number;
 
-  if (/^\d*\.?\d*$/.test(maxPrice)) {
-    formattedPrice = Number(maxPrice)
-  }
-
   const searchFormData = {
     city,
     dateOfArrival,
-    dateOfDeparture,
-    formattedPrice
+    dateOfDeparture
   } as ISearchFormData;
 
-  const search = new FlatRentSdk()
-  const results = search.search(searchFormData)
-  results.then(resolve => renderSearchResultsBlock(resolve))
+  if (/^\d*\.?\d*$/.test(maxPrice)) {
+    formattedPrice = Number(maxPrice);
+    searchFormData.maxPrice = formattedPrice;
+  }
+
+  const search = new FlatRentSdk();
+  const results = search.search(searchFormData);
+  results.then(resolve => renderSearchResultsBlock(resolve as ISearchResult[]));
 }
