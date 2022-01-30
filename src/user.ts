@@ -18,20 +18,20 @@ export function setLocalData(): void {
 
 function checkUserData(obj: any): obj is IUser {
   return !!obj &&
-    typeof obj === "object" &&
-    "username" in obj && "username" in obj
+    typeof obj === 'object' &&
+    'username' in obj && 'username' in obj
 }
 
 export function getUserData(): IUser {
-  let user = JSON.parse(localStorage.getItem('user') || '') as unknown;
+  const user = JSON.parse(localStorage.getItem('user') || '') as unknown;
 
   if (checkUserData(user)) {
-    let verifiedUser = {} as IUser;
+    const verifiedUser = {} as IUser;
 
-    if (typeof user.username === "string") {
+    if (typeof user.username === 'string') {
       verifiedUser.username = user.username;
     }
-    if (typeof user.avatarUrl === "string") {
+    if (typeof user.avatarUrl === 'string') {
       verifiedUser.avatarUrl = user.avatarUrl;
     }
 
@@ -42,16 +42,16 @@ export function getUserData(): IUser {
 }
 
 function checkFavoritesAmountData(obj: any): obj is IFavoritesAmount {
-  return !!obj && typeof obj === "object" && "count" in obj
+  return !!obj && typeof obj === 'object' && 'count' in obj
 }
 
 export function getFavoritesAmount(): IFavoritesAmount {
-  let favoritesAmount = JSON.parse(localStorage.getItem('favoritesAmount') || '') as unknown;
+  const favoritesAmount = JSON.parse(localStorage.getItem('favoritesAmount') || '') as unknown;
   
   if (checkFavoritesAmountData(favoritesAmount)) {
-    let verifiedFavoritesAmount = {} as IFavoritesAmount;
+    const verifiedFavoritesAmount = {} as IFavoritesAmount;
 
-    if (favoritesAmount.count && typeof favoritesAmount.count === "number") {
+    if (favoritesAmount.count && typeof favoritesAmount.count === 'number') {
       verifiedFavoritesAmount.count = favoritesAmount.count ;
     }
 
