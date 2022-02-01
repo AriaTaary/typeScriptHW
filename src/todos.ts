@@ -1,15 +1,6 @@
 import { IToDo } from './types.js'
 import { renderToast } from './lib.js'
 
-function checkTodosData(obj: any): obj is IToDo[] {
-  return obj.every((item: IToDo): boolean => {
-    return !!item &&
-      typeof item === "object" &&
-      "userId" in item && "id" in item && "title" in item && "completed" in item
-  });
-}
-
-
 export async function getTodosByCount(count: number) {
   const responseData = await fetch('https://jsonplaceholder.typicode.com/todos')
     .then<IToDo[]>(response => { return response.json() });

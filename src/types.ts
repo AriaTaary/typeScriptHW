@@ -1,10 +1,10 @@
 export interface IUser {
-  username: string,
-  avatarUrl: string
+  username?: string,
+  avatarUrl?: string
 }
 
 export interface IFavoritesAmount {
-  count: number
+  count?: number
 }
 
 export interface ISearchFormData {
@@ -29,4 +29,14 @@ export interface IToDo {
   id: number
   title: string
   completed: boolean
+}
+
+export interface INotificationMessage {
+  type: string
+  text: string
+}
+
+export interface INotificationAction { 
+  name?: string 
+  handler?: Function
 }

@@ -13,7 +13,7 @@ export function renderSearchStubBlock () {
   )
 }
 
-export function renderEmptyOrErrorSearchBlock (reasonMessage) {
+export function renderEmptyOrErrorSearchBlock (reasonMessage: string) {
   renderBlock(
     'search-results-block',
     `
@@ -42,13 +42,13 @@ export function renderSearchResultsBlock(results: ISearchResult[]) {
     </div>
     <ul class="results-list">
     ${results.forEach((result: ISearchResult) => {
-      return `<li class="result">
+    return `<li class="result">
         <div class="result-container">
           <div class="result-img-container">
             <div class="favorites active"></div>
             ${result.photos.forEach((photo: string) => {
-              return `<img class="result-img" src="${photo}" alt="">`
-            })}
+    return `<img class="result-img" src="${photo}" alt="">`
+  })}
           </div>	
           <div class="result-info">
             <div class="result-info--header">
@@ -65,7 +65,7 @@ export function renderSearchResultsBlock(results: ISearchResult[]) {
           </div>
         </div>
       </li>`
-    })}
+  })}
     </ul>`
   )
 }
